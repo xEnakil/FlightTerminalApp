@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/DividedProgram/DividedProgram.iml" filepath="$PROJECT_DIR$/DividedProgram/DividedProgram.iml" />
       <module fileurl="file://$PROJECT_DIR$/FlightApp.iml" filepath="$PROJECT_DIR$/FlightApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/DividedProgram/FlightSavingLogic/FlightSavingLogic.iml" filepath="$PROJECT_DIR$/DividedProgram/FlightSavingLogic/FlightSavingLogic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DividedProgram/FlightSavingLogic2.0/FlightSavingLogic2.0.iml" filepath="$PROJECT_DIR$/DividedProgram/FlightSavingLogic2.0/FlightSavingLogic2.0.iml" />
       <module fileurl="file://$PROJECT_DIR$/DividedProgram/LogRegLocig/LogRegLocig.iml" filepath="$PROJECT_DIR$/DividedProgram/LogRegLocig/LogRegLocig.iml" />
       <module fileurl="file://$PROJECT_DIR$/Divided/LogRegLogic/LogRegLogic.iml" filepath="$PROJECT_DIR$/Divided/LogRegLogic/LogRegLogic.iml" />
       <module fileurl="file://$PROJECT_DIR$/DividedProgram/LoginRegistrationLogic/LoginRegistrationLogic.iml" filepath="$PROJECT_DIR$/DividedProgram/LoginRegistrationLogic/LoginRegistrationLogic.iml" />

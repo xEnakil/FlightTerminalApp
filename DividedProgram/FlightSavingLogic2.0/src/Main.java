@@ -16,10 +16,11 @@ public class Main {
 
             switch (choice) {
                 case 1:
+                    System.out.println("Adding new flights>");
                     addFlights(flightsList, input);
                     break;
                 case 2:
-                    System.out.println("Processing the result.");
+                    System.out.println("Processing the result>");
                     showFlights(flightsList);
                     break;
                 case 3:
@@ -28,32 +29,6 @@ public class Main {
                 default:
                     System.out.println("No such choice");
             }
-        }
-    }
-
-    public static void showFlights(ArrayList<Flight> flightsList) {
-        try (FileInputStream fis = new FileInputStream("flights.ser")) {
-            ArrayList<Flight> newFlightList = new ArrayList<>();
-            boolean endOfFile = false;
-
-            while (!endOfFile) {
-                try {
-                    ObjectInputStream ois = new ObjectInputStream(fis);
-                    ArrayList<Flight> tempList = (ArrayList<Flight>) ois.readObject();
-                    newFlightList.addAll(tempList);
-                } catch (EOFException e) {
-                    endOfFile = true;
-                }
-            }
-
-            fis.close();
-            for (Flight flight : newFlightList) {
-                System.out.println("Id: " + flight.id + "\nDestination From: " + flight.destinationFrom + "\nDestination To: " + flight.destinationTo + "\nSeat Count: " + flight.seatCount);
-                System.out.println("-------------------------------");
-            }
-
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -67,14 +42,35 @@ public class Main {
         System.out.print("Seat Count: ");
         int seatCount = input.nextInt();
 
-        Flight newFlight = new Flight(id,destTo,destFrom,seatCount);
+        Flight newFlight = new Flight(id, destTo, destFrom, seatCount);
 
         flightsList.add(newFlight);
 
-        try (FileOutputStream fos = new FileOutputStream("flights.ser", true)) {
+        saveFligthsToFile(flightsList);
+    }
+
+    public static void showFlights (ArrayList<Flight> flightsList) {
+        ArrayList<Flight> storedFlights = readFligthsFromFile();
+        for (Flight flight : storedFlights) {
+            System.out.println("Id: " + flight.id + "\nDestination From: " + flight.destinationFrom + "\nDestination To: " + flight.destinationTo + "\nSeat Count: " + flight.seatCount);
+            System.out.println("-------------------------------");
+        }
+    }
+
+    public static ArrayList<Flight> readFligthsFromFile () {
+        try {
+            FileInputStream fis = new FileInputStream("flights.ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            return (ArrayList<Flight>) ois.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            return new ArrayList<>();
+        }
+    }
+    public static void saveFligthsToFile (ArrayList<Flight> flightsList) {
+        try {
+            FileOutputStream fos = new FileOutputStream("flights.ser", true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(flightsList);
-            oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
