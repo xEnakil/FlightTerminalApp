@@ -1,0 +1,3 @@
+1,Baku,London,122
+2,Tblisi,Turkey,45
+3,New York,Rome,55

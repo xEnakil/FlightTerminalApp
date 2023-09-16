@@ -67,7 +67,7 @@ public class Main {
             Object flight;
 
 
-        } catch (ClassNotFoundException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return flightsList;
