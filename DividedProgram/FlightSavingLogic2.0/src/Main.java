@@ -1,11 +1,12 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        ArrayList<Flight> flightsList = new ArrayList<>();
+        List<Flight> flightsList = new ArrayList<>();
 
         while (true) {
             System.out.println("-------------------------------");
@@ -32,7 +33,7 @@ public class Main {
         }
     }
 
-    public static void addFlights(ArrayList<Flight> flightsList, Scanner input) {
+    public static void addFlights(List<Flight> flightsList, Scanner input) {
         System.out.print("ID: ");
         int id = input.nextInt();
         System.out.print("Destination From: ");
@@ -46,31 +47,40 @@ public class Main {
 
         flightsList.add(newFlight);
 
-        saveFligthsToFile(flightsList);
+        saveFlightsToFile(flightsList);
     }
 
-    public static void showFlights (ArrayList<Flight> flightsList) {
-        ArrayList<Flight> storedFlights = readFligthsFromFile();
+    public static void showFlights (List<Flight> flightsList) {
+        List<Flight> storedFlights = readFligthsFromFile();
         for (Flight flight : storedFlights) {
             System.out.println("Id: " + flight.id + "\nDestination From: " + flight.destinationFrom + "\nDestination To: " + flight.destinationTo + "\nSeat Count: " + flight.seatCount);
             System.out.println("-------------------------------");
         }
     }
 
-    public static ArrayList<Flight> readFligthsFromFile () {
+    public static List<Flight> readFligthsFromFile () {
+        List<Flight> flightsList = new ArrayList<>();
+
         try {
-            FileInputStream fis = new FileInputStream("flights.ser");
+            FileInputStream fis = new FileInputStream("flights");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            return (ArrayList<Flight>) ois.readObject();
+            Object flight;
+
+
         } catch (ClassNotFoundException | IOException e) {
-            return new ArrayList<>();
+            e.printStackTrace();
         }
+        return flightsList;
     }
-    public static void saveFligthsToFile (ArrayList<Flight> flightsList) {
+
+    public static void saveFlightsToFile (List<Flight> flightsList) {
         try {
-            FileOutputStream fos = new FileOutputStream("flights.ser", true);
+            FileOutputStream fos = new FileOutputStream("flights", true);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(flightsList);
+            for (Flight flight : flightsList) {
+                oos.writeObject(flight);
+            }
+            oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
