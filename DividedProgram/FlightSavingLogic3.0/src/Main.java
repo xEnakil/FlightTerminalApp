@@ -67,6 +67,7 @@ public class Main {
             writer.write("\n");
             writer.write(joinedWords);
             writer.flush();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -153,14 +154,10 @@ public class Main {
     }
 
     public static void removeBlankSpace () {
-        try {
-            File fileLocation = new File("flights.txt");
-            Scanner file = new Scanner(fileLocation);
-
-            File fileTemp = new File("flightsWithoutBlank.txt");
-
-            PrintWriter write = new PrintWriter(fileTemp);
-
+        File fileLocation = new File("flights.txt");
+        File fileTemp = new File("flightsWithoutBlank.txt");
+        try (Scanner file = new Scanner(fileLocation);
+             PrintWriter write = new PrintWriter(fileTemp)) {
             while (file.hasNext()) {
                 String line = file.nextLine();
 

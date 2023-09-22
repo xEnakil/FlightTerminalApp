@@ -1,3 +1,7 @@
 1,Baku,London,122
 2,Paris,Jersey,52
 3,Tehran,Paris,44
+4,Paris,Morocco,44
+5,Jersey,California,23
+6,Tokyo,Seoul,56
+7,Tehran,Ankara,244
