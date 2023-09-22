@@ -20,25 +20,31 @@ public class Main {
                 case 1:
                     System.out.println("Adding new flights>");
                     addFlightsToFile(input);
+                    removeBlankSpace();
                     break;
                 case 2:
                     System.out.println("Processing the result>");
+                    removeBlankSpace();
                     ArrayList<Flight> listFlight = readFlightFromFile();
                     showFlights(listFlight);
                     break;
+                case 3:
+                    removeBlankSpace();
+                    removeFlight(input);
+                    break;
                 case 4:
+                    removeBlankSpace();
                     System.out.println("Thanks for using our software. Leaving the system....");
                     System.exit(0);
                     break;
-                case 3:
-                    removeFlight(input);
+
                 default:
                     System.out.println("No such choice");
             }
         }
     }
 
-    public static void addFlightsToFile (Scanner input) {
+    public static void addFlightsToFile(Scanner input) {
         ArrayList<String> flightDetails = new ArrayList<>();
         System.out.print("Enter the id: ");
         String id = input.next();
@@ -58,8 +64,8 @@ public class Main {
 
         try {
             FileWriter writer = new FileWriter("flights.txt", true);
-            writer.write(joinedWords);
             writer.write("\n");
+            writer.write(joinedWords);
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,7 +74,7 @@ public class Main {
         System.out.println("Flight detail successfully added.");
     }
 
-    public static ArrayList<Flight> readFlightFromFile () {
+    public static ArrayList<Flight> readFlightFromFile() {
         ArrayList<Flight> flightList = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("flights.txt"));
@@ -81,60 +87,103 @@ public class Main {
                 String destTo = parts[2];
                 int seatCount = Integer.parseInt(parts[3]);
 
-                Flight newFlight = new Flight(id,destFrom,destTo,seatCount);
+                Flight newFlight = new Flight(id, destTo, destFrom, seatCount);
 
                 flightList.add(newFlight);
             }
+            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return flightList;
     }
 
-    public static void showFlights (ArrayList<Flight> flightList) {
+    public static void showFlights(ArrayList<Flight> flightList) {
         for (Flight flight : flightList) {
             System.out.println("Id: " + flight.id + "\nDestination From: " + flight.destinationFrom + "\nDestination To: " + flight.destinationTo + "\nSeat Count: " + flight.seatCount);
             System.out.println("-------------------------------");
         }
     }
 
-    public static void removeFlight (Scanner input) throws IOException {
-        String fileName = "flights.txt";
-        String lineToRemove = input.next();
+    public static void removeFlight(Scanner input) throws IOException {
+            String fileName = "flights.txt";
+            System.out.print("Enter the id of the flight: ");
+            int flightIdToDelete = input.nextInt();
 
-        try {
-            File inputFile = new File(fileName);
-            File tempFile = new File("tempFile.txt");
+            try {
+                File inputFile = new File(fileName);
+                File tempFile = new File("tempFile.txt");
 
-            BufferedReader br = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
+                BufferedReader br = new BufferedReader(new FileReader(inputFile));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
 
-            String currentLine;
+                String currentLine;
 
-            while ((currentLine = br.readLine()) != null) {
-                if (currentLine.contains(lineToRemove)) {
-                    continue;
+                while ((currentLine = br.readLine()) != null) {
+                    String[] parts = currentLine.split(",");
+
+                    int id = Integer.parseInt(parts[0]);
+
+                    if (id == flightIdToDelete) {
+                        continue;
+                    }
+
+                    bw.write(currentLine);
+                    bw.newLine();
                 }
-                bw.write(currentLine);
-                bw.newLine();
+
+                bw.close();
+                br.close();
+
+                if (inputFile.delete()) {
+                    if (tempFile.renameTo(inputFile)) {
+                        System.out.println("Line deleted successfully!");
+                    } else {
+                        System.out.println("Error renaming the temporary file.");
+                    }
+                } else {
+                    System.out.println("Error deleting the file. (RemoveFlight)");
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            bw.close();
-            br.close();
+    }
 
-            if (inputFile.delete()) {
-                if (tempFile.renameTo(inputFile)) {
-                    System.out.println("Line deleted successfully!");
+    public static void removeBlankSpace () {
+        try {
+            File fileLocation = new File("flights.txt");
+            Scanner file = new Scanner(fileLocation);
+
+            File fileTemp = new File("flightsWithoutBlank.txt");
+
+            PrintWriter write = new PrintWriter(fileTemp);
+
+            while (file.hasNext()) {
+                String line = file.nextLine();
+
+                if (!line.isEmpty()) {
+                    write.write(line);
+                    write.write("\n");
+                }
+            }
+
+            file.close();
+            write.close();
+
+            if (fileLocation.delete()) {
+                if (fileTemp.renameTo(fileLocation)) {
+                    System.out.println("Blank lines removed successfully!");
                 } else {
                     System.out.println("Error renaming the temporary file.");
                 }
             } else {
-                System.out.println("Error deleting the file.");
+                System.out.println("Error deleting the file. (RemoveBlankSpace)");
             }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException exception) {
+            exception.printStackTrace();
         }
     }
 }
