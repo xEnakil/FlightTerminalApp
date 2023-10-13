@@ -45,6 +45,7 @@ public class Main {
     }
 
     public static void addFlightsToFile(Scanner input) {
+        // This section is for adding flight for local txt file
         ArrayList<String> flightDetails = new ArrayList<>();
         System.out.print("Enter the id: ");
         String id = input.next();
@@ -76,6 +77,7 @@ public class Main {
     }
 
     public static ArrayList<Flight> readFlightFromFile() {
+        // This section is for reading flights from a txt file where flights are saving locally
         ArrayList<Flight> flightList = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("flights.txt"));
